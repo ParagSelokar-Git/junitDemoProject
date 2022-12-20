@@ -1,4 +1,4 @@
-package com.example.demo.service;
+package com.example.demo.dao;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -18,10 +18,10 @@ import com.example.demo.dao.EmployeeDao;
 import com.example.demo.entity.Employee;
 
 @SpringBootTest
-public class EmployeeServiceImplTest {
+public class EmployeeDaoImplTest {
 
 	@InjectMocks
-	EmployeeServiceImpl employeeServiceImpl;
+	EmployeeDaoImpl employeeDaoImpl;
 
 	@Mock
 	EmployeeDao employeeDao;
@@ -30,17 +30,7 @@ public class EmployeeServiceImplTest {
 	@Test
 	public void getEmpByIdTest() {
 		when(employeeDao.getEmpById(5L)).thenReturn(createEmployeeStub());
-		Employee emp = employeeServiceImpl.getEmpById(5L);		
-		assertEquals(emp.getName(), "name-5");
-	}
-	
-	// JUnit test for addEmp method
-	@Test
-	public void addEmpTest() {
-		Employee addEmp = new Employee((long) 5, "name-5");
-		
-		when(employeeDao.addEmployee(addEmp)).thenReturn(createEmployeeStub());
-		Employee emp = employeeServiceImpl.addEmployee(addEmp);		
+		Employee emp = employeeDaoImpl.getEmpById(5L);		
 		assertEquals(emp.getName(), "name-5");
 	}
 
@@ -48,9 +38,9 @@ public class EmployeeServiceImplTest {
 	@Test
     public void getAllEmployeesTest(){
     	when(employeeDao.getAllEmployees()).thenReturn(createAllEmployeesStub());
-        List<Employee> employeeList = employeeServiceImpl.getAllEmployees();
+        List<Employee> employeeList = employeeDaoImpl.getAllEmployees();
         assertThat(employeeList).isNotNull();
-        assertThat(employeeList.size()).isEqualTo(2);
+        assertThat(employeeList.size()).isEqualTo(20);
     }
 
 	private Employee createEmployeeStub() {
@@ -59,7 +49,7 @@ public class EmployeeServiceImplTest {
 	}
 
 	public List<Employee> createAllEmployeesStub() {
-		return IntStream.rangeClosed(1, 2).mapToObj(i -> new Employee((long) i, "name-" + i))
+		return IntStream.rangeClosed(1, 20).mapToObj(i -> new Employee((long) i, "name-" + i))
 				.collect(Collectors.toList());
 	}
 }

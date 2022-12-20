@@ -10,9 +10,13 @@ import com.example.demo.entity.Employee;
 
 @Service
 public class EmployeeDaoImpl implements EmployeeDao {
+	
+	public static List<Employee> employeeList;
+	
 	@Override
 	public Employee addEmployee(Employee employee) {
-		return null;
+		employeeList.add(employee);
+		return employee;
 	}
 
 	@Override
@@ -41,8 +45,10 @@ public class EmployeeDaoImpl implements EmployeeDao {
 	public void deleteEmpById(Long empidL) {
 	}
 
-	public List<Employee> getAllEmployeesList() {
-		return IntStream.rangeClosed(1, 20).mapToObj(i -> new Employee((long) i, "name-" + i))
+	public static List<Employee> getAllEmployeesList() {
+		
+		employeeList = IntStream.rangeClosed(1, 20).mapToObj(i -> new Employee((long) i, "name-" + i))
 				.collect(Collectors.toList());
+		return employeeList;
 	}
 }
