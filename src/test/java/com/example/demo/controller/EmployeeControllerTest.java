@@ -18,38 +18,60 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import com.example.demo.entity.Employee;
 import com.example.demo.service.EmployeeService;
+import com.google.gson.Gson;
 
 //@SpringBootTest
 @WebMvcTest(EmployeeController.class)
 public class EmployeeControllerTest {
 
-
 	@Autowired
 	MockMvc mockMvc;
-	
+
 	@MockBean
 	EmployeeService employeeService;
 
-	
-	// JUnit test 	for getEmpById method
+	// JUnit test for getEmpById method
 	@Test
 	public void getEmpByIdTest() throws Exception {
-		
 		String url = "http://localhost:8080/employee/emp/5";
-		
 		when(employeeService.getEmpById(5L)).thenReturn(createEmployeeStub());
-		MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get(url).accept(MediaType.APPLICATION_JSON)).andReturn();
-    	Mockito.verify(employeeService).getEmpById((long) 5);
+		MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get(url).accept(MediaType.APPLICATION_JSON))
+				.andReturn();
+		Mockito.verify(employeeService).getEmpById((long) 5);
 	}
 
 	// JUnit test for getAllEmployees method
 	@Test
-    public void getAllEmployeesTest() throws Exception{
+	public void getAllEmployeesTest() throws Exception {
 		String url = "http://localhost:8080/employee/all";
-    	when(employeeService.getAllEmployees()).thenReturn(createAllEmployeesStub());
-        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get(url).accept(MediaType.APPLICATION_JSON)).andReturn();
-    	Mockito.verify(employeeService).getAllEmployees();
-    }
+		when(employeeService.getAllEmployees()).thenReturn(createAllEmployeesStub());
+		MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get(url).accept(MediaType.APPLICATION_JSON))
+				.andReturn();
+		Mockito.verify(employeeService).getAllEmployees();
+	}
+
+	// JUnit test for deleteEmployees method
+	@Test
+	public void deleteEmpByIdTest() throws Exception {
+		String uri = "http://localhost:8080/employee/delete/1";
+		MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.delete(uri)).andReturn();
+		int status = mvcResult.getResponse().getStatus();
+		String content = mvcResult.getResponse().getContentAsString();
+		Mockito.verify(employeeService).deleteEmpById((long) 1);
+	}
+
+	// JUnit test for addEmployee method
+	@Test
+	public void addEmployeeTest() throws Exception {
+		String uri = "http://localhost:8080/employee/save";
+		Employee addEmp = new Employee((long) 5, "name-5");
+		String inputJson = new Gson().toJson(addEmp);
+		MvcResult mvcResult = mockMvc.perform(
+				MockMvcRequestBuilders.post(uri).contentType(MediaType.APPLICATION_JSON_VALUE).content(inputJson))
+				.andReturn();
+		Mockito.verify(employeeService).addEmployee(addEmp);
+
+	}
 
 	private Employee createEmployeeStub() {
 		Employee emp = new Employee((long) 5, "name-5");
