@@ -66,6 +66,7 @@
 					<excludes>
 						Application
 						<exclude>**/entity/*.class</exclude>
+						<exclude>**/exceptions/*.class</exclude>
 						<exclude>**/Application*.class</exclude>
 						<exclude>**/JunitDemoProjectApplication*.class</exclude>
 					</excludes>
