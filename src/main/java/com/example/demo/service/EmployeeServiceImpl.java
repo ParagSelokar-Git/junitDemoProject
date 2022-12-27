@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 
 import com.example.demo.dao.EmployeeDao;
 import com.example.demo.entity.Employee;
+import com.example.demo.exceptions.EmployeeAlreadyPresent;
+import com.example.demo.exceptions.EmployeeNotPresent;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
@@ -16,7 +18,13 @@ public class EmployeeServiceImpl implements EmployeeService {
 	
 	@Override
 	public Employee addEmployee(Employee employee) {
-		return employeeDao.addEmployee(employee);
+		
+		Employee employeePresentOrNot = employeeDao.getEmpById(employee.getId());
+		if(employeePresentOrNot == null) {
+			return employeeDao.addEmployee(employee);
+		}else {
+			throw new EmployeeAlreadyPresent();
+		}
 	}
 
 	@Override
@@ -27,7 +35,13 @@ public class EmployeeServiceImpl implements EmployeeService {
 
 	@Override
 	public Employee getEmpById(Long empidL) {
-		return employeeDao.getEmpById(empidL);
+		
+		Employee employeePresentOrNot = employeeDao.getEmpById(empidL);
+		if(employeePresentOrNot == null) {
+			throw new EmployeeNotPresent("Please check the employee id");
+		}else {
+			return employeePresentOrNot;
+		}
 	}
 
 	@Override

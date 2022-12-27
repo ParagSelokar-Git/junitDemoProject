@@ -9,12 +9,12 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.entity.Employee;
+import com.example.demo.exceptions.EmployeeNotPresent;
 import com.example.demo.service.EmployeeService;
 
 
@@ -40,14 +40,12 @@ public class EmployeeController {
 	
 	@GetMapping("/emp/{empid}")
 	public ResponseEntity<Employee> getEmpById(@PathVariable("empid") Long empidL){
-		
 		Employee empRetrieved = employeeService.getEmpById(empidL);
 		return new ResponseEntity<Employee>(empRetrieved, HttpStatus.OK);
 	}
 	
 	@DeleteMapping("/delete/{empid}")
 	public ResponseEntity<Void> deleteEmpById(@PathVariable("empid") Long empidL){
-		
 		employeeService.deleteEmpById(empidL);
 		return new ResponseEntity<Void>(HttpStatus.ACCEPTED);
 	}

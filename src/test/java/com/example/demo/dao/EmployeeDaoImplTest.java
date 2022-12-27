@@ -28,15 +28,23 @@ public class EmployeeDaoImplTest {
 
 	// JUnit test for getEmpById method
 	@Test
-	public void getEmpByIdTest() {
+	public void testGetEmpById() {
 		when(employeeDao.getEmpById(5L)).thenReturn(createEmployeeStub());
-		Employee emp = employeeDaoImpl.getEmpById(5L);		
-		assertEquals(emp.getName(), "name-5");
+		Employee emp = employeeDaoImpl.getEmpById(5L);	
+		assertEquals(emp.getId(), 5);
 	}
+
+	// JUnit test for getEmpById method
+		@Test
+		public void testGetEmpByName() {
+			when(employeeDao.getEmpById(5L)).thenReturn(createEmployeeStub());
+			Employee emp = employeeDaoImpl.getEmpById(5L);	
+			assertEquals(emp.getName(), "name-5");
+		}
 
 	// JUnit test for getAllEmployees method
 	@Test
-    public void getAllEmployeesTest(){
+    public void testGetAllEmployeesCount(){
     	when(employeeDao.getAllEmployees()).thenReturn(createAllEmployeesStub());
         List<Employee> employeeList = employeeDaoImpl.getAllEmployees();
         assertThat(employeeList).isNotNull();
