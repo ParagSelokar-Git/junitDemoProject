@@ -18,6 +18,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import com.example.demo.dao.EmployeeDao;
 import com.example.demo.entity.Employee;
 import com.example.demo.exceptions.EmployeeAlreadyPresent;
+import com.example.demo.exceptions.EmployeeNotPresent;
 
 @SpringBootTest
 public class EmployeeServiceImplTest {
@@ -62,6 +63,13 @@ public class EmployeeServiceImplTest {
 		when(employeeDao.getEmpById(5L)).thenReturn(createEmployeeStub());
 		Employee addEmp = new Employee((long) 5, "name-5");
 		assertThrows(EmployeeAlreadyPresent.class, () -> employeeServiceImpl.addEmployee(addEmp));
+	}
+	
+	@Test
+	@DisplayName("Throws error if Employee is not existed in system")
+	public void testEmpNotExisted() {
+		when(employeeDao.getEmpById(5L)).thenReturn(createEmployeeStub());
+		assertThrows(EmployeeNotPresent.class, () -> employeeServiceImpl.getEmpById(52L));
 	}
 
 	// JUnit test for getAllEmployees method
